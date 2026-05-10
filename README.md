@@ -6,15 +6,6 @@ This project was created primarily for **educational and learning purposes**.
 While it is well-structured and could technically be used in production, it is **not intended for commercialization**.  
 The main goal is to explore and demonstrate best practices, patterns, and technologies in software development.
 
-## Getting Started
-
-1. Clone the repository
-2. Navigate to the project folder
-3. Execute: `npm install`
-4. Execute: `npm run dev`
-
-The application will open automatically at `http://localhost:3000`
-
 ## Description
 
 **Countly** is a minimalist counter web application built with React 19 and TypeScript. It provides a single-page interface centered around a numeric counter that can be manipulated through three actions: **Increase** (adds 1), **Decrease** (subtracts 1), and **Reset** (returns the counter to zero).
@@ -27,6 +18,8 @@ Under the hood, Countly is built on a Vite dev server with strict TypeScript set
 
 ## Technologies used
 
+The stack reflects the tooling described above and is intentionally minimal:
+
 1. React JS
 2. TypeScript
 3. Vite
@@ -34,6 +27,8 @@ Under the hood, Countly is built on a Vite dev server with strict TypeScript set
 5. CSS3
 
 ## Libraries used
+
+These are the exact dependencies pinned in `package.json` that power the stack listed above.
 
 #### Dependencies
 
@@ -72,11 +67,20 @@ Under the hood, Countly is built on a Vite dev server with strict TypeScript set
 "vite": "^7.1.6"
 ```
 
-## Portfolio Link
+## Getting Started
 
-[`https://www.diegolibonati.com.ar/#/project/countly`](https://www.diegolibonati.com.ar/#/project/countly)
+With the dependencies above declared in `package.json`, the local setup is straightforward:
+
+1. Clone the repository
+2. Navigate to the project folder
+3. Execute: `npm install`
+4. Execute: `npm run dev`
+
+The application will open automatically at `http://localhost:3000`.
 
 ## Testing
+
+Once the app is running locally, you can validate behavior with the Jest + Testing Library suite:
 
 1. Navigate to the project folder
 2. Execute: `npm test`
@@ -87,7 +91,11 @@ For coverage report:
 npm run test:coverage
 ```
 
-## Security
+Coverage is enforced at a 70% threshold across rendering, interaction, and color-logic tests.
+
+## Security Audit
+
+Beyond functional tests, you can also audit dependencies and overall project health.
 
 ### npm audit
 
@@ -114,3 +122,7 @@ npm run doctor -- --verbose
 ## Known Issues
 
 None at the moment.
+
+## Portfolio Link
+
+[`https://www.diegolibonati.com.ar/#/project/countly`](https://www.diegolibonati.com.ar/#/project/countly)
