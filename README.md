@@ -69,6 +69,8 @@ These are the exact dependencies pinned in `package.json` that power the stack l
 
 ## Getting Started
 
+Requires **Node.js >= 22**. Use `.nvmrc` with `nvm use` to switch automatically.
+
 With the dependencies above declared in `package.json`, the local setup is straightforward:
 
 1. Clone the repository
@@ -92,6 +94,16 @@ npm run test:coverage
 ```
 
 Coverage is enforced at a 70% threshold across rendering, interaction, and color-logic tests.
+
+## CI/CD
+
+Every push and pull request to `main` runs a three-stage GitHub Actions pipeline:
+
+1. **Lint & Audit** — `npm run lint` + `npm run type-check`
+2. **Testing** — `npm run test` (Jest suite, 70% coverage threshold enforced)
+3. **Build** — `npm run build` (type-check + Vite production build)
+
+Each stage depends on the previous one; the build only runs if tests pass.
 
 ## Security Audit
 
