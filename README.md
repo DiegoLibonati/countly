@@ -95,15 +95,51 @@ npm run test:coverage
 
 Coverage is enforced at a 70% threshold across rendering, interaction, and color-logic tests.
 
-## CI/CD
+## Continuous Integration
 
-Every push and pull request to `main` runs a three-stage GitHub Actions pipeline:
+The repository ships with a **GitHub Actions** pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It runs automatically on every `push` and `pull_request` targeting the `main` branch.
 
-1. **Lint & Audit** — `npm run lint` + `npm run type-check`
-2. **Testing** — `npm run test` (Jest suite, 70% coverage threshold enforced)
-3. **Build** — `npm run build` (type-check + Vite production build)
+### Pipeline overview
 
-Each stage depends on the previous one; the build only runs if tests pass.
+```
+                      ┌─── PR or push to main ───┐
+                      ▼                          ▼
+┌──────────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│    lint-and-audit    │─▶│      testing     │─▶│       build      │
+│ eslint · tsc --noEmit│  │ jest (jsdom, 70%)│  │ tsc + vite build │
+└──────────────────────┘  └──────────────────┘  └──────────────────┘
+```
+
+### Validation jobs (run on every PR and push)
+
+1. **`lint-and-audit`** — runs `npm run lint` (ESLint on `src/`) followed by `npm run type-check` (`tsc -p tsconfig.app.json --noEmit`).
+2. **`testing`** — runs `npm run test` (Jest + Testing Library on `jsdom`, 70% coverage threshold enforced). Depends on `lint-and-audit`.
+3. **`build`** — runs `npm run build` (type-check + Vite production build) as a smoke test that the bundle compiles. Depends on `testing`.
+
+Each stage depends on the previous one, so the build only runs if lint, type-check and tests pass. All jobs run on `ubuntu-latest`, pin Node.js to the version declared in [`.nvmrc`](.nvmrc) via `actions/setup-node`, and reuse the npm cache between runs.
+
+### Where the build outputs live
+
+| Output                                    | Location                     |
+| ----------------------------------------- | ---------------------------- |
+| Validation logs (lint, type-check, tests) | **Actions** tab on GitHub    |
+| Production bundle (`dist/`)               | Ephemeral, inside the runner |
+
+> **Note:** This pipeline is validation-only — it does not publish releases, tags, or artifacts. The production bundle is rebuilt locally with `npm run build` when needed.
+
+### Running the same checks locally
+
+```bash
+# lint-and-audit
+npm run lint
+npm run type-check
+
+# testing
+npm run test
+
+# build
+npm run build
+```
 
 ## Security Audit
 
